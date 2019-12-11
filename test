@@ -1,0 +1,44 @@
+◆php基本知識
+echo
+if
+while
+for
+foreach
+fanction
+fanction_exec
+
+
+スーパーグローバル変数
+$_GET
+$_POST
+$_SERVER
+$_COOKIE
+
+◆PHPの関数
+isset()
+empty()
+fopen()
+flock()
+fgets()
+fputs()
+fclose()
+htmlspecialchars()
+setcookie()
+
+◆用語について
+・サニタイズ
+（サニタジング）
+・連想配列
+・セッション(データの保存のために出てくる)
+・DBどらいば
+
+◆DB操作のPHPプログラム
+//データベース接続
+try{
+    $pdo = new nPDO(
+        "pgsql:host=localhost;
+        dbname=db;",
+        "db", "db"
+    );
+
+}catch(PDOException $e)
