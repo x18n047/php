@@ -1,0 +1,179 @@
+●PHP課題3
+以下の内容はすべて「public_html」内に「kadai03」というディレクトリを作成し、その中に指定されたファイル名で作成してください。
+ブラウザで動作を確認する時は、 http://ux5/~学籍番号/kadai03/課題ファイル名.php で確認ができます。
+この課題については、授業中に作成した「lib.php」ファイルなどを利用して構いません。
+
+
+[dbconnect.php]
+1.PDOクラスで自分のデータベースへ接続し、その接続情報をvar_dump()関数で出力後、切断してください。
+
+
+[create_table.php]
+2.テーブルの作成と削除をするための入力フォームを作成してください。データベースへの接続にはPDOクラスを使うものとします。
+　「テーブル作成」ボタンを押したら以下に示すテーブルを作成し、「テーブル削除」ボタンを押したら以下のテーブルを削除します。
+　テーブルの作成は、以下の情報を入力フォームに入力して作成するか、ソースコード内に直接記述して作成するかのどちらかで行って下さい。
+
+　テーブルの作成または削除に失敗した場合は「テーブル操作に失敗しました」とメッセージを表示してデータベースから切断してください。
+　また、テーブル操作に成功した場合は、「テーブルを作成しました。」または「テーブルを削除しました。」と、操作に成功したメッセージを表示してください。
+　以下に参考のHTMLを掲載しますが、この通りに作成する必要はありません。
+　
+■テーブル名： account
+　[フィールド名]　[データ型]　[制約]　の順に並んでいます。
+　クエリの形に整形して利用してください。
+	id VARCHAR(20) PRIMARY KEY
+	name VARCHAR(50)
+	password VARCHAR(50) NOT NULL
+	regdate TIMESTAMP
+	update TIMESTAMP
+	memo VARCHAR(255)
+
+●参考----------------------
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>テーブル操作</title>
+</head>
+<body>
+<form action="" method="POST">
+	<input type="submit" name="CREATE" value="テーブル作成">
+	<input type="submit" name="DROP" value="テーブル削除">
+</form><hr>
+<?php
+	// DB操作はこの位置に記述する
+?>
+</body>
+</html>
+●参考ここまで------------------
+
+
+[insert_table.php]
+3.問題2で作成したテーブルにデータを追加する入力フォームを作成します。
+ データは必ず”入力フォームに入力されたもの”をデータベースへ追加し、登録するデータがソースコードに直接含まれないようにしてください。
+　以下のデータがすべて登録されていれば、それ以外のデータがテーブルに含まれていても構いません。
+　入力フォームの、各コンポーネントの「name属性」値は、適切に処理が行われるのであれば、どのような名前でも構いません。
+　また、追加されたデータがすぐに確認できるよう、入力フォームの下に現在のテーブルのデータをすべて表示してください。
+　Webページのサンプルコードも以下に示しますが、この通りに作成しなくても構いません。
+
+　※入力されたデータの処理は、以下のとおりプログラムを組んでください。
+　　・IDとパスワードの両方が入力されていなければ、その情報は追加しない
+　　・氏名とメモは省略可能。省略された場合、テーブルにはnull値で登録される
+　　・テーブルの「regdate」フィールド(登録日時)と「update」フィールド(更新日時)は、登録時の日時をそれぞれに記録する
+　　・登録時の日時は、プログラムまたはデータベースの関数を使って求める。よって、この2つのフィールドは、フォームから入力しない
+
+■登録データ　※[]はテーブルのフィールド名、「現在時刻」にはその時の日時を記録する
+　[id], [name], [password], [regdate], [update], [memo]
+　test, TestUser, pass, 現在時刻, 現在時刻, てすと
+　example, ExampleUser, exam, 現在時刻, 現在時刻, えぐざんぷる
+　local, LocalUser, localpw, 現在時刻, 現在時刻, ローカルホスト
+　fjb, FJB User, fjbfjb, 現在時刻, 現在時刻, FJB
+　del, Delete User, delete, 現在時刻, 現在時刻, 削除
+
+●参考----------------------
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Input Data</title>
+</head>
+<body>
+<form action="" method="POST">
+	ID： <input type="text" name="ID" size="10"><br>
+	氏名： <input type="text" name="NAME"><br>
+	パスワード： <input type="password" name="PASSWD" size="10"><br>
+	メモ： <input type="text" name="MEMO"><br>
+	<input type="submit" name="INSERT" value="データ追加">
+	<input type="reset" name="RESET" value="クリア">
+</form><hr>
+<?php
+	// ここにDBへデータを追加する処理を記述
+?>
+<p>テーブルの状況</p>
+<?php
+	// ここにDBのデータを全て表示する処理を記述
+?>
+</body>
+</html>
+●参考ここまで------------------
+
+
+[update_table.php]
+4.問題3で登録したデータを、IDを指定して更新する入力フォームを作成します。
+　入力フォームにはIDの他に、氏名、パスワード、メモの入力を受け付けるようにし、データが入力された項目を更新します。
+　値が入力されなかった項目は更新せず、それまで通りの値が保持されるようにしてください。
+　データの更新があったレコードは、更新と同時に「update」フィールドの日時を更新時の日時に変更してください。
+　入力フォームに更新日時の欄は設けません。
+　また、更新されたデータがすぐに確認できるよう、入力フォームの下に現在のテーブルのデータをすべて表示してください。
+　Webページのサンプルコードも以下に示しますが、この通りに作成しなくても構いません。
+
+　更新するデータは以下に示す通りです。
+　以下のデータがすべて正しく更新されていれば、それ以外のデータが含まれていても構いません。
+
+■更新データ
+　※この3点のデータは入力フォームからデータを送信して更新すること
+　・id「test」の「password」を「longpasswd」に変更する。
+　・id「fjb」の「name」を「船橋情報ビジネス専門学校」に変更する。
+　・id「del」の「password」を「afterdel」、「memo」を「これはあとで消す」に変更する。
+
+●参考----------------------
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Update</title>
+</head>
+<body>
+<form action="" method="POST">
+	更新対象のID： <input type="text" name="ID" size="10"><br>
+	<hr>
+	※更新する項目のみ入力<br>
+	氏名： <input type="text" name="NAME"><br>
+	パスワード： <input type="password" name="PASSWD" size="10"><br>
+	メモ： <input type="text" name="MEMO"><br>
+	<input type="submit" name="INSERT" value="データ更新">
+	<input type="reset" name="RESET" value="クリア">
+</form><hr>
+<p>テーブルの状況</p>
+<?php
+
+?>
+</body>
+</html>
+●参考ここまで------------------
+
+
+[delete_table.php]
+5.問題3で登録したデータを、IDを指定して削除する入力フォームを作成します。
+　IDの欄に値が入力されなかった場合は、削除処理を行いません。
+　プログラムを作成する際は、テーブルのデータをすべて削除しないよう注意してデバッグしてください。
+　誤って削除してしまった場合は、問題3の内容を参考にもとに戻してください。
+　また、削除されたデータがすぐに確認できるよう、入力フォームの下に現在のテーブルのデータをすべて表示してください。
+　Webページのサンプルコードも以下に示しますが、この通りに作成しなくても構いません。
+
+　削除するデータは以下に示す通りです。
+　以下のデータがすべて削除されていれば、それ以外のデータが残っていても構いません。
+
+■削除データ
+　・id「del」
+　・id「test」
+
+●参考----------------------
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Delete</title>
+</head>
+<body>
+<form action="" method="POST">
+	削除対象のユーザーID： <input type="text" name="ID"><br>
+	<input type="submit" name="DELETE" value="データ削除">
+	<input type="reset" name="RESET" value="クリア">
+</form><hr>
+<p>テーブルの状況</p>
+<?php
+
+?>
+</body>
+</html>
+●参考ここまで------------------
